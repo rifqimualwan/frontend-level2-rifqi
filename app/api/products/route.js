@@ -1,75 +1,27 @@
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import { getConnection } from "../../../lib/db";
 
-const prisma = new PrismaClient();
-
-const verifyToken = (token) => {
+export async function GET() {
   try {
-    return jwt.verify(token, process.env.JWT_SECRET || "super_secret_jwt_key");
+    const connection = await getConnection();
+    const query = `
+      SELECT 
+        p.product_id AS id,
+        p.product_name AS \`Product Name\`,
+        p.product_brand AS \`Product Brand\`,
+        o.owner_name AS \`Product Owner\`
+      FROM products p
+      LEFT JOIN products_owners po ON p.product_id = po.products_id
+      LEFT JOIN owners o ON po.owners_id = o.id
+    `;
+    const [rows] = await connection.execute(query);
+    await connection.end();
+    return NextResponse.json(rows);
   } catch (error) {
-    return null;
-  }
-};
-
-export async function POST(request) {
-  try {
-    const token = request.headers.get("authorization")?.replace("Bearer ", "");
-    if (!token) {
-      return NextResponse.json(
-        { error: "Unauthorized: No token provided" },
-        { status: 401 }
-      );
-    }
-
-    const decoded = verifyToken(token);
-    if (!decoded) {
-      return NextResponse.json(
-        { error: "Unauthorized: Invalid token" },
-        { status: 401 }
-      );
-    }
-
-    const products = await prisma.products.findMany({
-      select: {
-        product_id: true,
-        product_name: true,
-        product_brand: true,
-        products_owners: {
-          select: {
-            owners: {
-              select: {
-                owner_name: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    const formattedProducts = products.map((product) => ({
-      id: product.product_id,
-      product_name: product.product_name,
-      product_brand: product.product_brand,
-      product_owner: product.products_owners?.owners?.owner_name || "N/A",
-    }));
-
-    console.log("Query executed successfully, rows:", formattedProducts.length);
-    return NextResponse.json(formattedProducts, { status: 200 });
-  } catch (error) {
-    console.error("Database error:", error.message, error.stack);
+    console.error("Query error:", error.message);
     return NextResponse.json(
       { error: "Failed to fetch products", details: error.message },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
-}
-
-export async function GET() {
-  return NextResponse.json(
-    { error: "Method GET not allowed. Use POST instead." },
-    { status: 405 }
-  );
 }

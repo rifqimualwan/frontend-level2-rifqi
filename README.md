@@ -50,11 +50,11 @@ If you have questions or need help integrating the product please [contact us](h
 
 ## Useful Links
 
-- [Bootstrap Template](https://dashui.codescandy.com/free-bootstrap-5-admin-dashboard-template.html)
-- [React Template](https://dashui.codescandy.com/free-reactjs-admin-dashboard-template.html)
-- [Next.js Template](https://dashui.codescandy.com/free-next-js-admin-dashboard-template.html)
-- [Nuxt.js Template](https://dashui.codescandy.com/free-nuxt-js-admin-dashboard-template.html)
-- [Tailwind Template](https://dashui.codescandy.com/free-tailwindcss-admin-dashboard-html-template.html)
+-  [Bootstrap Template](https://dashui.codescandy.com/free-bootstrap-5-admin-dashboard-template.html)
+-  [React Template](https://dashui.codescandy.com/free-reactjs-admin-dashboard-template.html)
+-  [Next.js Template](https://dashui.codescandy.com/free-next-js-admin-dashboard-template.html)
+-  [Nuxt.js Template](https://dashui.codescandy.com/free-nuxt-js-admin-dashboard-template.html)
+-  [Tailwind Template](https://dashui.codescandy.com/free-tailwindcss-admin-dashboard-html-template.html)
 
 ## Figma Design File
 
@@ -64,19 +64,15 @@ Ready to use [Figma File](https://www.figma.com/community/file/12591053091225180
 
 Get more power with [Dash UI pro](https://dashui.codescandy.com/) featuring bunch of UI components, forms, tables, charts, pages, and icons.
 
-| Free Version                                                                              | DashUI PRO                                                                         |
-| ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| ✔️ 1 Dashboard                                                                            | ✔️ 6 Dashboard                                                                     |
-| ✔️ 11 HTML Pages                                                                          | ✔️ 60+ HTML pages                                                                  |
-| ✔️ Includine Docs                                                                         | ✔️ Documentation                                                                   |
-| ✔️ 4 Plugins                                                                              | ✔️ 10+ Plugins                                                                     |
-| ✔️ Source Files                                                                           | ✔️ Source Files                                                                    |
-| ❌ Dark Mode                                                                              | ✔️ Dark Mode                                                                       |
-| ❌ Layout Options                                                                         | ✔️ Layout Variations                                                               |
-| ❌ Priority Support                                                                       | ✔️ Priority Support                                                                |
-| -                                                                                         | ✔️ Free Update                                                                     |
+| Free Version                                                                                       | DashUI PRO                                                                                  |
+| -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| ✔️ 1 Dashboard                                                                                     | ✔️ 6 Dashboard                                                                              |
+| ✔️ 11 HTML Pages                                                                                   | ✔️ 60+ HTML pages                                                                           |
+| ✔️ Includine Docs                                                                                  | ✔️ Documentation                                                                            |
+| ✔️ 4 Plugins                                                                                       | ✔️ 10+ Plugins                                                                              |
+| ✔️ Source Files                                                                                    | ✔️ Source Files                                                                             |
+| ❌ Dark Mode                                                                                       | ✔️ Dark Mode                                                                                |
+| ❌ Layout Options                                                                                  | ✔️ Layout Variations                                                                        |
+| ❌ Priority Support                                                                                | ✔️ Priority Support                                                                         |
+| -                                                                                                  | ✔️ Free Update                                                                              |
 | [Free Download](https://dashui.codescandy.com/free-next-js-admin-dashboard-template.html) | [Get Dash UI](https://dashui.codescandy.com/next-js-admin-dashboard-template.html) |
-
-# frontend-level2-rifqi
-
-# frontend-level2-rifqi
