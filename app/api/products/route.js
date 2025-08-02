@@ -1,51 +1,61 @@
-// app/api/products/route.js
-import mysql from "mysql2/promise";
+import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
-export async function GET() {
-  let connection;
+const prisma = new PrismaClient();
+
+const verifyToken = (token) => {
   try {
-    // Verify environment variables
-    if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_NAME) {
-      console.error("Missing environment variables:", {
-        DB_HOST: process.env.DB_HOST,
-        DB_USER: process.env.DB_USER,
-        DB_NAME: process.env.DB_NAME,
-      });
+    return jwt.verify(token, process.env.JWT_SECRET || "super_secret_jwt_key");
+  } catch (error) {
+    return null;
+  }
+};
+
+export async function POST(request) {
+  try {
+    const token = request.headers.get("authorization")?.replace("Bearer ", "");
+    if (!token) {
       return NextResponse.json(
-        { error: "Server configuration error: Missing environment variables" },
-        { status: 500 }
+        { error: "Unauthorized: No token provided" },
+        { status: 401 }
       );
     }
 
-    // Create a connection to the database
-    connection = await mysql.createConnection({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD || "", // Handle empty password
-      database: process.env.DB_NAME,
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      return NextResponse.json(
+        { error: "Unauthorized: Invalid token" },
+        { status: 401 }
+      );
+    }
+
+    const products = await prisma.products.findMany({
+      select: {
+        product_id: true,
+        product_name: true,
+        product_brand: true,
+        products_owners: {
+          select: {
+            owners: {
+              select: {
+                owner_name: true,
+              },
+            },
+          },
+        },
+      },
     });
 
-    // Test connection
-    await connection.connect();
-    console.log("Successfully connected to the database");
+    const formattedProducts = products.map((product) => ({
+      id: product.product_id,
+      product_name: product.product_name,
+      product_brand: product.product_brand,
+      product_owner: product.products_owners?.owners?.owner_name || "N/A",
+    }));
 
-    // Execute the SQL query
-    const query = `
-      SELECT 
-        p.product_id AS id,
-        p.product_name AS product_name,
-        p.product_brand AS product_brand,
-        o.owner_name AS product_owner
-      FROM products p
-      LEFT JOIN products_owners po ON p.product_id = po.products_id
-      LEFT JOIN owners o ON po.owners_id = o.id
-    `;
-    const [rows] = await connection.execute(query);
-    console.log("Query executed successfully, rows:", rows.length);
-
-    // Return the results as JSON
-    return NextResponse.json(rows, { status: 200 });
+    console.log("Query executed successfully, rows:", formattedProducts.length);
+    return NextResponse.json(formattedProducts, { status: 200 });
   } catch (error) {
     console.error("Database error:", error.message, error.stack);
     return NextResponse.json(
@@ -53,13 +63,13 @@ export async function GET() {
       { status: 500 }
     );
   } finally {
-    if (connection) {
-      try {
-        await connection.end();
-        console.log("Database connection closed");
-      } catch (err) {
-        console.error("Error closing connection:", err.message);
-      }
-    }
+    await prisma.$disconnect();
   }
+}
+
+export async function GET() {
+  return NextResponse.json(
+    { error: "Method GET not allowed. Use POST instead." },
+    { status: 405 }
+  );
 }

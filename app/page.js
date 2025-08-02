@@ -1,16 +1,11 @@
 "use client";
 
-// Import node module libraries
-import { Row, Col, Card, Form, Button, Image, Alert } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Alert } from "react-bootstrap";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-// Import hooks
 import useMounted from "hooks/useMounted";
-
-// Import API functions
-import { login, fetchProfile } from "../lib/auth"; // Adjust the import path as needed
+import { login } from "../lib/auth";
 
 const SignIn = () => {
   const hasMounted = useMounted();
@@ -26,23 +21,10 @@ const SignIn = () => {
     setLoading(true);
 
     try {
-      // Call login API
-      const { access_token, refresh_token } = await login({ email, password });
-
-      // Store tokens in localStorage
+      const { access_token } = await login({ email, password });
       localStorage.setItem("access_token", access_token);
-      localStorage.setItem("refresh_token", refresh_token);
-
-      // Fetch user profile
-      const profile = await fetchProfile(access_token);
-
-      // Optionally store profile data or redirect
-      console.log("User Profile:", profile);
-
-      // Redirect to a protected route (e.g., dashboard)
       router.push("/dashboard");
     } catch (err) {
-      // Handle errors based on API documentation
       if (err.message.includes("401")) {
         setError("Invalid email or password. Please try again.");
       } else if (err.message.includes("400")) {
@@ -58,15 +40,12 @@ const SignIn = () => {
   return (
     <Row className="align-items-center justify-content-center g-0 min-vh-100">
       <Col xxl={4} lg={6} md={8} xs={12} className="py-8 py-xl-0">
-        {/* Card */}
         <Card className="smooth-shadow-md">
-          {/* Card body */}
           <Card.Body className="p-6">
             <div className="mb-4">
               <h1 className="text-2xl font-bold text-primary mb-2">LOGIN</h1>
               <p className="mb-6">Please enter your user information.</p>
             </div>
-            {/* Error Alert */}
             {error && (
               <Alert
                 variant="danger"
@@ -76,10 +55,8 @@ const SignIn = () => {
                 {error}
               </Alert>
             )}
-            {/* Form */}
             {hasMounted && (
               <Form onSubmit={handleSubmit}>
-                {/* Email */}
                 <Form.Group className="mb-3" controlId="email">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
@@ -91,8 +68,6 @@ const SignIn = () => {
                     required
                   />
                 </Form.Group>
-
-                {/* Password */}
                 <Form.Group className="mb-3" controlId="password">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
@@ -104,8 +79,6 @@ const SignIn = () => {
                     required
                   />
                 </Form.Group>
-
-                {/* Checkbox */}
                 <div className="d-lg-flex justify-content-between align-items-center mb-4">
                   <Form.Check type="checkbox" id="rememberme">
                     <Form.Check.Input type="checkbox" />
@@ -113,7 +86,6 @@ const SignIn = () => {
                   </Form.Check>
                 </div>
                 <div>
-                  {/* Button */}
                   <div className="d-grid">
                     <Button variant="primary" type="submit" disabled={loading}>
                       {loading ? "Signing In..." : "Sign In"}

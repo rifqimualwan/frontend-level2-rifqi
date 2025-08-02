@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
-require("dotenv").config();
 const nextConfig = {
   reactStrictMode: true,
 };
+
+require("dotenv").config();
 
 module.exports = nextConfig;

@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Row, Col, Card, Table, Alert } from "react-bootstrap";
-import Link from "next/link";
-import Image from "next/image";
-
 import useMounted from "hooks/useMounted";
 
 const ProductsTable = () => {
@@ -16,13 +13,32 @@ const ProductsTable = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("/api/products");
-        if (!res.ok) throw new Error("Failed to fetch products");
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+          throw new Error("No authentication token found");
+        }
+
+        const res = await fetch("/api/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            throw new Error("Unauthorized: Please log in again");
+          }
+          throw new Error("Failed to fetch products");
+        }
+
         const data = await res.json();
         setProducts(data);
       } catch (err) {
         setError(
-          "An error occurred while fetching products. Please try again."
+          err.message ||
+            "An error occurred while fetching products. Please try again."
         );
       } finally {
         setLoading(false);
