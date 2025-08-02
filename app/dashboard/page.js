@@ -1,4 +1,3 @@
-// app/products/page.jsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -6,7 +5,6 @@ import { Row, Col, Card, Table, Alert } from "react-bootstrap";
 import Link from "next/link";
 import Image from "next/image";
 
-// Import hooks
 import useMounted from "hooks/useMounted";
 
 const ProductsTable = () => {
@@ -36,14 +34,11 @@ const ProductsTable = () => {
   return (
     <Row className="align-items-center justify-content-center g-0 min-vh-100 bg-light">
       <Col xxl={8} lg={10} md={12} xs={12} className="py-8 py-xl-0">
-        {/* Card */}
         <Card className="smooth-shadow-md">
-          {/* Card body */}
           <Card.Body className="p-6">
             <div className="mb-4">
               <h2 className="mb-6">Product List</h2>
             </div>
-            {/* Error Alert */}
             {error && (
               <Alert
                 variant="danger"
@@ -53,7 +48,6 @@ const ProductsTable = () => {
                 {error}
               </Alert>
             )}
-            {/* Table */}
             {hasMounted && (
               <>
                 {loading ? (

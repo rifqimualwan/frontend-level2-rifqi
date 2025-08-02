@@ -1,11 +1,9 @@
-// app/api/products/route.js
 import mysql from "mysql2/promise";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   let connection;
   try {
-    // Create a connection to the database
     connection = await mysql.createConnection({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
@@ -13,7 +11,6 @@ export async function GET() {
       database: process.env.DB_NAME,
     });
 
-    // Execute the SQL query
     const query = `
       SELECT 
         p.product_id AS id,
@@ -26,10 +23,8 @@ export async function GET() {
     `;
     const [rows] = await connection.execute(query);
 
-    // Close the connection
     await connection.end();
 
-    // Return the results as JSON
     return NextResponse.json(rows, { status: 200 });
   } catch (error) {
     console.error("Database error:", error);
