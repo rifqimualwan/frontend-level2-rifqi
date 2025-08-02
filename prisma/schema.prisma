@@ -1,9 +1,8 @@
-generator client { provider = "prisma-client-js" }
+generator client {
+  provider = "prisma-client-js"
+}
 
-datasource db { provider = "mysql" url = env("DATABASE_URL") }
-
-model products { product_id Int @id @default(autoincrement()) product_name String product_brand String products_owners products_owners[] }
-
-model owners { id Int @id @default(autoincrement()) owner_name String products_owners products_owners[] }
-
-model products_owners { products_id Int owners_id Int products products @relation(fields: [products_id], references: [product_id]) owners owners @relation(fields: [owners_id], references: [id]) @@id([products_id, owners_id]) }
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
